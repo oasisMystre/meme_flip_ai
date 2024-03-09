@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { ImageEditorComponent } from "@syncfusion/ej2-react-image-editor";
+// import { ImageEditorComponent } from "@syncfusion/ej2-react-image-editor";
 
 import Dialog from "./Dialog";
 
