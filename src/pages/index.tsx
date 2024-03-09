@@ -2,7 +2,6 @@ import { useTelegramWebApp } from "@telegram-web-app/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { MdSearch } from "react-icons/md";
 
-import Dialog from "../components/Dialog";
 import { GetMemeContext } from "../providers/GetMemeProvider";
 import MemeList from "../components/MemeList";
 import { Meme } from "../lib/api/imgflip/models/Meme.model";
