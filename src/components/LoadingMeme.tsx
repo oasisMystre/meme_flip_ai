@@ -1,7 +1,7 @@
 export default function LoadingMeme() {
   return (
     <div className="grid grid-cols-3 gap-4 overflow-y-scroll">
-      {Array.from(new Array(100).values()).map((index) => {
+      {Array.from(new Array(100).values()).map((_, index) => {
         return (
           <div
             key={index}

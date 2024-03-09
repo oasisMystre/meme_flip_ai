@@ -2,8 +2,9 @@
 
 :root {
   --tg-theme-bg-color: #000;
+  --tg-theme-text-color: #fff;
 }
 
 #search:focus-within svg {
-  color: rgb(34 197 94);
+--at-apply: text-amber-300;
 }

@@ -15,11 +15,11 @@ export default function Dialog({ visible, setVisible, children }: DialogProps) {
   return (
     <div
       ref={dialogRef}
-      className={clsx("fixed inset-0  bg-black/50 pt-16", [
+      className={clsx("fixed inset-0  bg-black/50 lt-md:pt-16 md:flex md:items-center md:justify-center", [
         visible ? "flex flex-col" : "hidden",
       ])}
     >
-      <div className="flex-1 bg-stone-950 rounded-t-xl">{children}</div>
+      <div className="lt-md:flex-1 flex flex-col space-y-4 bg-stone-900 rounded-t-xl p-4 overflow-y-scroll md:max-w-lg">{children}</div>
     </div>
   );
 }
