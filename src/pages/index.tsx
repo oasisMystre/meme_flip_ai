@@ -33,6 +33,8 @@ export default function HomePage() {
   useEffect(() => {
     setupTelegramWebApp(Telegram);
     Telegram.WebApp.MainButton.onClick(onSelect);
+    Telegram.WebApp.onEvent("mainButtonClicked", onSelect);
+
   }, [Telegram]);
 
   return (
@@ -45,7 +47,6 @@ export default function HomePage() {
           }}
         />
         <div className="flex-1 flex flex-col">
-          <button onClick={onSelect}>Select Me</button>
           {loadingState === "success" ? (
             <MemeList
               memes={memes}
