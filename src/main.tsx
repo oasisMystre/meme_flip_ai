@@ -22,7 +22,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <TelegramWebAppProvider>
-      <div className="fixed inset-0 bg-[var(--tg-theme-bg-color)] text-[var(--tg-theme-text-color)] overflow-y-scroll">
+      <div className="fixed inset-0 flex flex-col bg-[var(--tg-theme-bg-color)] text-[var(--tg-theme-text-color)]  overflow-y-scroll">
         <GetMemeProvider>
           <RouterProvider router={router} />
         </GetMemeProvider>

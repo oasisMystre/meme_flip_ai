@@ -24,7 +24,7 @@ export default forwardRef<ImageEditorDialogElement>(function ImageEditorDialog(
       visible={visible}
       setVisible={setVisible}
     >
-      <ImageEditorComponent  width="256" height="256"/>
+      {/* <ImageEditorComponent  width="256" height="256"/> */}
     </Dialog>
   );
 });

@@ -17,12 +17,11 @@ export default function MemeList({
     <div className="grid grid-cols-3 gap-4 overflow-y-scroll">
       {memes.map((meme) => {
         const selected = selectedMemes.has(meme.id);
-        console.log(selected)
 
         return (
           <div
             key={meme.id}
-            className="relative max-w-36 min-h-40 max-h-40 bg-stone-800/50 rounded-md dark:bg-stone-900 overflow-hidden"
+            className="relative max-w-36 min-h-40 max-h-40 bg-stone-800/50 rounded-md overflow-hidden"
             onClick={() => onSelect(meme)}
           >
             <img

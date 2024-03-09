@@ -8,6 +8,8 @@ import { Meme } from "../lib/api/imgflip/models/Meme.model";
 import ImageEditorDialog, {
   ImageEditorDialogElement,
 } from "../components/ImageEditorDialog";
+import LoadingMeme from "../components/LoadingMeme";
+import LoadingMemeError from "../components/LoadingMemeError";
 
 function setupTelegramWebApp(Telegram: ReturnType<typeof useTelegramWebApp>) {
   Telegram.WebApp.MainButton.text = "Add Caption";
@@ -16,16 +18,22 @@ function setupTelegramWebApp(Telegram: ReturnType<typeof useTelegramWebApp>) {
 
 export default function HomePage() {
   const Telegram = useTelegramWebApp();
-  const { memes } = useContext(GetMemeContext);
+  const { memes, loadingState } = useContext(GetMemeContext);
 
   const imageEditorRef = useRef<ImageEditorDialogElement | null>(null);
   const [selectedMemes, setSelectedMemes] = useState(new Set<Meme["id"]>());
 
-  useEffect(() => setupTelegramWebApp(Telegram), [Telegram]);
+  useEffect(() => {
+    setupTelegramWebApp(Telegram);
+    Telegram.WebApp.MainButton.onClick = function () {
+      imageEditorRef.current?.toggle();
+      return Telegram.WebApp.MainButton;
+    };
+  }, [Telegram]);
 
   return (
     <>
-      <div className="flex flex-col space-y-8 p-4">
+      <div className="flex-1 flex flex-col space-y-8 p-4">
         <div
           id="search"
           className="flex items-center space-x-2 px-2 bg-stone-800/50 rounded-md  border-1 border-transparent focus-within:ring-3 focus-within:border-green-500 ring-green-300"
@@ -36,23 +44,30 @@ export default function HomePage() {
             placeholder="Search meme, gifs, tags"
           />
         </div>
-        <MemeList
-          memes={memes}
-          selectedMemes={selectedMemes}
-          onSelect={(meme) => {
-            const exists = selectedMemes.has(meme.id);
+        <div className="flex-1 flex flex-col">
+          {loadingState === "success" ? (
+            <MemeList
+              memes={memes}
+              selectedMemes={selectedMemes}
+              onSelect={(meme) => {
+                const exists = selectedMemes.has(meme.id);
 
-            setSelectedMemes((selectedMemes) => {
-              if (exists) selectedMemes.delete(meme.id);
-              else selectedMemes.add(meme.id);
-              if (selectedMemes.size > 0) Telegram.WebApp.MainButton.show();
-              else Telegram.WebApp.MainButton.hide();
-              return new Set(selectedMemes);
-            });
-          }}
-        />
+                setSelectedMemes((selectedMemes) => {
+                  if (exists) selectedMemes.delete(meme.id);
+                  else selectedMemes.add(meme.id);
+                  if (selectedMemes.size > 0) Telegram.WebApp.MainButton.show();
+                  else Telegram.WebApp.MainButton.hide();
+                  return new Set(selectedMemes);
+                });
+              }}
+            />
+          ) : loadingState === "failed" ? (
+            <LoadingMemeError />
+          ) : (
+            <LoadingMeme />
+          )}
+        </div>
       </div>
-      <button className="bg-green-500 px-8 py-2" onClick={() => imageEditorRef.current?.toggle()}>Show Dialoh</button>
       <ImageEditorDialog ref={imageEditorRef} />
     </>
   );
