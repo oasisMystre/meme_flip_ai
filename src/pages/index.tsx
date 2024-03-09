@@ -22,22 +22,30 @@ export default function HomePage() {
   const [source, setSource] = useState<string[]>();
   const [selectedMemes, setSelectedMemes] = useState(new Set<Meme["id"]>());
 
+  const onSelect = () => {
+    setSource(
+      Array.from(selectedMemes.values()).map(
+        (id) => memes.find((meme) => meme.id === id)!.url
+      )
+    );
+  };
+
   useEffect(() => {
     setupTelegramWebApp(Telegram);
-    Telegram.WebApp.MainButton.onClick(function () {
-      setSource(
-        Array.from(selectedMemes.values()).map(
-          (id) => memes.find((meme) => meme.id === id)!.url
-        )
-      );
-    });
+    Telegram.WebApp.MainButton.onClick(onSelect);
   }, [Telegram]);
 
   return (
     <>
       <div className="flex-1 flex flex-col space-y-8 p-4">
-        <Search onUpload={setSource} />
+        <Search
+          onUpload={(source) => {
+            setSource(source);
+            if (source.length > 0) Telegram.WebApp.MainButton.hide();
+          }}
+        />
         <div className="flex-1 flex flex-col">
+          <button onClick={onSelect}>Select Me</button>
           {loadingState === "success" ? (
             <MemeList
               memes={memes}

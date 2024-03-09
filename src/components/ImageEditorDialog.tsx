@@ -43,8 +43,9 @@ export default function ImageEditorDialog({
 
               return (
                 <div
+                  key={index}
                   className={clsx(
-                    "relative w-full h-12 rounded-md flex justify-center items-center",
+                    "relative w-16 h-16 rounded-md flex justify-center items-center",
                     { "border-3 border-amber-300": selected }
                   )}
                   onClick={() => setActiveImage(image)}
@@ -73,16 +74,12 @@ export default function ImageEditorDialog({
             })}
           </div>
           {activeImage && (
-            <div className="flex-1 flex flex-col space-y-8">
+            <div
+              key={activeImage}
+              className="flex-1 flex flex-col space-y-8"
+            >
               <ImageEditor src={activeImage} />
-              <div>
-                <div className="bg-stone-800/70 px-2 rounded">
-                  <input
-                    className="bg-transparent py-2"
-                    placeholder="Enter Text"
-                  />
-                </div>
-              </div>
+
               <button className="bg-amber-500 py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600">
                 Generate Meme
               </button>

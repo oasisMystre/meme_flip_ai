@@ -38,6 +38,12 @@ dependencies:
   react-konva:
     specifier: ^18.2.10
     version: 18.2.10(konva@9.3.6)(react-dom@18.2.0)(react@18.2.0)
+  react-konva-utils:
+    specifier: ^1.0.6
+    version: 1.0.6(konva@9.3.6)(react-dom@18.2.0)(react@18.2.0)
+  react-onclickoutside:
+    specifier: ^6.13.0
+    version: 6.13.0(react-dom@18.2.0)(react@18.2.0)
   react-router-dom:
     specifier: ^6.22.3
     version: 6.22.3(react-dom@18.2.0)(react@18.2.0)
@@ -2576,6 +2582,20 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-konva-utils@1.0.6(konva@9.3.6)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-011+jyXwadFDkbIUdlTarKwbqME0ljX1vPeW5oyLQx4rtHdcsDr43tdOdSsMT3XpZyl8clgM9I/eK0lBuBuFHg==}
+    peerDependencies:
+      konva: ^8.3.5 || ^9.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      konva: 9.3.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-konva: 18.2.10(konva@9.3.6)(react-dom@18.2.0)(react@18.2.0)
+      use-image: 1.1.1(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
   /react-konva@18.2.10(konva@9.3.6)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-ohcX1BJINL43m4ynjZ24MxFI1syjBdrXhqVxYVDw2rKgr3yuS0x/6m1Y2Z4sl4T/gKhfreBx8KHisd0XC6OT1g==}
     peerDependencies:
@@ -2590,6 +2610,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-reconciler: 0.29.0(react@18.2.0)
       scheduler: 0.23.0
+    dev: false
+
+  /react-onclickoutside@6.13.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ty8So6tcUpIb+ZE+1HAhbLROvAIJYyJe/1vRrrcmW+jLsaM+/powDRqxzo6hSh9CuRZGSL1Q8mvcF5WRD93a0A==}
+    peerDependencies:
+      react: ^15.5.x || ^16.x || ^17.x || ^18.x
+      react-dom: ^15.5.x || ^16.x || ^17.x || ^18.x
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-reconciler@0.29.0(react@18.2.0):
