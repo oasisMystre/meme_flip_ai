@@ -100,13 +100,13 @@ export default function ImageEditorDialog({
                 onClick={async () => {
                   try {
                     setLoading(true);
-                    const url = imageEditorRef.current!.clone().toDataURL();
+                    const url = Object.create(imageEditorRef.current!).clone().toDataURL();
                     const response = await ImageKit.instance.uploadImageURL(
                       url
                     );
                     toast.success("CMeme generated successful.");
                     Telegram.WebApp.openLink(
-                      "https://t.me/meme_flip_ai_Bot?download=" + response.url,
+                      response.url,
                       {
                        try_instant_view: true, 
                       }
