@@ -105,8 +105,11 @@ export default function ImageEditorDialog({
                       url
                     );
                     toast.success("CMeme generated successful.");
-                    Telegram.WebApp.openTelegramLink(
-                      "https://t.me/meme_flip_ai_Bot?download=" + response.url
+                    Telegram.WebApp.openLink(
+                      "https://t.me/meme_flip_ai_Bot?download=" + response.url,
+                      {
+                       try_instant_view: true, 
+                      }
                     );
                   } catch (e) {
                     toast.error("An unexpected error! Try generating again!");
