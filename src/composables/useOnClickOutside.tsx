@@ -4,29 +4,22 @@ type Props = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function useOnClickOutSide({
-  menuRef,
-  setIsOpen,
-}: Props) {
+export default function useOnClickOutSide({ menuRef, setIsOpen }: Props) {
   return () => {
     if (!menuRef.current) return;
-
-    const events = ["click", "touchstart"] as const;
 
     function onClick(event: TouchEvent | MouseEvent) {
       if (menuRef.current?.contains(event.target as Node)) return;
       setIsOpen(false);
-      events.forEach((type) => document.removeEventListener(type, onClick));
+      document.removeEventListener("click", onClick);
     }
 
     setTimeout(() => {
-      events.forEach((type) => {
-        document.addEventListener(type, onClick);
-      });
+      document.addEventListener("click", onClick);
     }, 500);
 
     return () => {
-      events.forEach((type) => document.removeEventListener(type, onClick));
+      document.removeEventListener("click", onClick);
     };
   };
 }

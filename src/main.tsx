@@ -1,8 +1,9 @@
 import "virtual:uno.css";
 import "@unocss/reset/tailwind.css";
-
+import "react-toastify/dist/ReactToastify.css";
 
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -22,9 +23,10 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <TelegramWebAppProvider>
-      <div className="fixed inset-0 flex flex-col bg-[var(--tg-theme-bg-color)] text-[var(--tg-theme-text-color)]  overflow-y-scroll">
+      <div className="fixed inset-0 flex flex-col bg-[var(--tg-theme-bg-color)] text-[var(--tg-theme-text-color)]  overflow-y-scroll font-sans">
         <GetMemeProvider>
           <RouterProvider router={router} />
+          <ToastContainer style={{ zIndex: 50 }} />
         </GetMemeProvider>
       </div>
     </TelegramWebAppProvider>

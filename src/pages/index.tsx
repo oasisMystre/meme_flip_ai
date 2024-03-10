@@ -1,5 +1,5 @@
 import { useTelegramWebApp } from "@telegram-web-app/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { GetMemeContext } from "../providers/GetMemeProvider";
 import { Meme } from "../lib/api/imgflip/models/Meme.model";
@@ -9,11 +9,6 @@ import MemeList from "../components/MemeList";
 import LoadingMeme from "../components/LoadingMeme";
 import LoadingMemeError from "../components/LoadingMemeError";
 import ImageEditorDialog from "../components/ImageEditorDialog";
-
-function setupTelegramWebApp(Telegram: ReturnType<typeof useTelegramWebApp>) {
-  Telegram.WebApp.MainButton.text = "Add Caption";
-  Telegram.WebApp.MainButton.color = "#f59e0b";
-}
 
 export default function HomePage() {
   const Telegram = useTelegramWebApp();
@@ -29,13 +24,6 @@ export default function HomePage() {
       )
     );
   };
-
-  useEffect(() => {
-    setupTelegramWebApp(Telegram);
-    Telegram.WebApp.MainButton.onClick(onSelect);
-    Telegram.WebApp.onEvent("mainButtonClicked", onSelect);
-
-  }, [Telegram]);
 
   return (
     <>
@@ -57,8 +45,7 @@ export default function HomePage() {
                 setSelectedMemes((selectedMemes) => {
                   if (exists) selectedMemes.delete(meme.id);
                   else selectedMemes.add(meme.id);
-                  if (selectedMemes.size > 0) Telegram.WebApp.MainButton.show();
-                  else Telegram.WebApp.MainButton.hide();
+
                   return new Set(selectedMemes);
                 });
               }}
@@ -69,13 +56,26 @@ export default function HomePage() {
             <LoadingMeme />
           )}
         </div>
+        {selectedMemes.size > 0 && (
+          <div className="fixed inset-x-0 bottom-0 flex flex-col">
+            <button
+              className="bg-amber-500 py-4 hover:bg-amber-600 active:bg-amber-600"
+              onClick={onSelect}
+            >
+              <p className="uppercase">Add Caption</p>
+            </button>
+          </div>
+        )}
       </div>
 
       <ImageEditorDialog
         source={source as string[]}
         visible={!!source}
         setSource={setSource}
-        onClose={() => setSource(undefined)}
+        onClose={() => {
+          setSource(undefined);
+          setSelectedMemes(new Set());
+        }}
       />
     </>
   );

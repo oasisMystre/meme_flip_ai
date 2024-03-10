@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import { PiSparkleFill } from "react-icons/pi";
 import { IoText } from "react-icons/io5";
 
@@ -13,25 +13,29 @@ import Konva from "konva";
 
 type ImageEditorProps = {
   src: string;
+  generating: boolean;
 };
 
-export default function ImageEditor({ src }: ImageEditorProps) {
-  const stageNodeRef = useRef<Konva.Stage | null>(null);
-
-  const [image] = useImage(src);
+export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
+  { src},
+  ref
+) {
+  const [image] = useImage(src, "anonymous");
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentText, setCurrentText] = useState<Konva.Text>();
   const [textEditDialogStyle, setTextEditDialogStyle] =
     useState<React.CSSProperties>();
-  const [texts, setTexts] = useState<React.ComponentProps<typeof Text>[]>([]);
+  const [texts, setTexts] = useState<
+    Omit<React.ComponentProps<typeof Text>, "hideDecorator">[]
+  >([]);
 
   return (
     <>
-      <div className="w-full max-w-[22rem] relative h-[22rem]">
+      <div className="w-full max-w-[22rem] relative h-[22rem] self-center">
         {isOpen && (
           <TextEditDialog
-          currentText={currentText}
+            currentText={currentText}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             style={textEditDialogStyle}
@@ -39,7 +43,7 @@ export default function ImageEditor({ src }: ImageEditorProps) {
         )}
 
         <Stage
-          ref={stageNodeRef}
+          ref={ref}
           width={convertRemToPixels(22)}
           height={convertRemToPixels(20)}
         >
@@ -108,4 +112,4 @@ export default function ImageEditor({ src }: ImageEditorProps) {
       </div>
     </>
   );
-}
+});

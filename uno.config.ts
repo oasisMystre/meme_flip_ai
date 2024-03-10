@@ -1,5 +1,20 @@
-import { defineConfig, transformerDirectives } from "unocss";
+import {
+  defineConfig,
+  transformerDirectives,
+  presetWebFonts,
+  presetUno,
+} from "unocss";
 
 export default defineConfig({
   transformers: [transformerDirectives()],
+  presets: [
+    presetUno(),
+    presetWebFonts({
+      provider: "google",
+      fonts: {
+        sans: "Nunito Sans",
+        lato: "Lato",
+      },
+    }),
+  ],
 });

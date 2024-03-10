@@ -14,14 +14,14 @@ export default function MemeList({
   onSelect,
 }: MemeListProps) {
   return (
-    <div className="grid grid-cols-3 gap-4 overflow-y-scroll">
+    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2 overflow-y-scroll">
       {memes.map((meme) => {
         const selected = selectedMemes.has(meme.id);
 
         return (
           <div
             key={meme.id}
-            className="relative max-w-36 min-h-40 max-h-40 bg-stone-800/50 rounded-md overflow-hidden"
+            className="relative min-h-40 max-h-48 bg-stone-800/50 rounded-md overflow-hidden"
             onClick={() => onSelect(meme)}
           >
             <img

@@ -1,10 +1,15 @@
 import clsx from "clsx";
+import Konva from "konva";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
+import { toast } from "react-toastify";
+
+import { useTelegramWebApp } from "@telegram-web-app/react";
 
 import Dialog from "./Dialog";
 import ImageEditor from "./ImageEditor";
+import ImageKit from "../lib/imagekit";
 
 export type ImageEditorDialogElement = {
   toggle: (state?: boolean) => void;
@@ -23,8 +28,14 @@ export default function ImageEditorDialog({
   setSource,
   onClose,
 }: ImageEditorDialogProps) {
+  const Telegram = useTelegramWebApp();
+  const imageEditorRef = useRef<Konva.Stage | null>(null);
+
+  const [loading, setLoading] = useState(false);
   const [activeImage, setActiveImage] = useState<string>();
+
   useEffect(() => setActiveImage(source?.[0]), [source]);
+
   return (
     source && (
       <Dialog
@@ -78,10 +89,43 @@ export default function ImageEditorDialog({
               key={activeImage}
               className="flex-1 flex flex-col space-y-8"
             >
-              <ImageEditor src={activeImage} />
+              <ImageEditor
+                ref={imageEditorRef}
+                src={activeImage}
+                generating={loading}
+              />
 
-              <button className="bg-amber-500 py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600">
-                Generate Meme
+              <button
+                className="self-center flex items-center justify-center w-xs bg-amber-500 py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600"
+                onClick={async () => {
+                  try {
+                    setLoading(true);
+                    const url = imageEditorRef.current!.toDataURL();
+                    const response = (await ImageKit.instance.uploadImageURL(
+                      url
+                    )) as any;
+                    toast.success(
+                      "Check telegram for output. Meme generated successful."
+                    );
+                    Telegram.WebApp.sendData(
+                      JSON.stringify({
+                        command: "echo-imagekit",
+                        response,
+                      })
+                    );
+                  } catch (e) {
+                    toast.error("An unexpected error! Try generating again!");
+                    throw e;
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+              >
+                {loading ? (
+                  <div className="w-6 h-6 border-3 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <span>Generate Meme</span>
+                )}
               </button>
             </div>
           )}

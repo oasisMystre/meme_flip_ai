@@ -3,6 +3,8 @@ import Konva from "konva";
 
 import { useEffect, useRef, useState } from "react";
 import { IoIosColorPalette } from "react-icons/io";
+import { SketchPicker } from "react-color";
+import { usePopper } from "react-popper";
 
 import useOnClickOutSide from "../composables/useOnClickOutSide";
 
@@ -19,8 +21,18 @@ export default function TextEditDialog({
   isOpen,
   setIsOpen,
 }: TextEditDialogProps) {
-  const [text, setText] = useState(currentText?.text())
+  const [isPalleteOpen, setPalleteOpen] = useState(false);
+  const [text, setText] = useState(currentText?.text());
+
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const palleteRef = useRef<HTMLButtonElement | null>(null);
+  const palleteMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const { styles, attributes } = usePopper(
+    palleteRef.current,
+    palleteMenuRef.current,
+    { placement: "auto" }
+  );
 
   useEffect(useOnClickOutSide({ isOpen, setIsOpen, menuRef }), [
     menuRef,
@@ -33,12 +45,12 @@ export default function TextEditDialog({
       ref={menuRef}
       style={style}
       className={clsx(
-        "absolute absolute flex flex-col w-56 bg-stone-950/90 p-2 rounded-md z-1000"
+        "absolute absolute flex flex-col w-56 bg-stone-950/90 p-2 rounded-md z-10"
       )}
     >
       <div className="flex space-x-2 items-center">
         <textarea
-        value={text}
+          value={text}
           className="flex-1 p-2 max-w-42 bg-stone-700/50 rounded !outline-none"
           placeholder="Edit Text"
           onInput={(event) => {
@@ -47,9 +59,30 @@ export default function TextEditDialog({
             currentText!.setText(text);
           }}
         />
-        <button className="bg-cyan p-1 rounded-md">
+        <button
+          ref={palleteRef}
+          className="bg-cyan p-1 rounded-md"
+          onClick={() => setPalleteOpen(!isPalleteOpen)}
+        >
           <IoIosColorPalette className="text-xl" />
         </button>
+        <div
+          ref={palleteMenuRef}
+          style={{
+            ...styles.popper,
+            display: isPalleteOpen ? "block" : "none",
+          }}
+          {...attributes.popper}
+        >
+          <SketchPicker
+            onChangeComplete={(color) => {
+              console.log(color);
+              currentText?.setAttrs({
+                fill: color.hex,
+              });
+            }}
+          />
+        </div>
       </div>
     </div>
   );
