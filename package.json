@@ -26,6 +26,7 @@
     "react-popper": "^2.3.0",
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.4",
+    "telegram": "^2.19.20",
     "use-image": "^1.1.1"
   },
   "devDependencies": {

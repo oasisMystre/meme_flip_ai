@@ -101,17 +101,12 @@ export default function ImageEditorDialog({
                   try {
                     setLoading(true);
                     const url = imageEditorRef.current!.toDataURL();
-                    const response = (await ImageKit.instance.uploadImageURL(
+                    const response = await ImageKit.instance.uploadImageURL(
                       url
-                    )) as any;
-                    toast.success(
-                      "Check telegram for output. Meme generated successful."
                     );
-                    Telegram.WebApp.sendData(
-                      JSON.stringify({
-                        command: "echo-imagekit",
-                        response,
-                      })
+                    toast.success("CMeme generated successful.");
+                    Telegram.WebApp.openTelegramLink(
+                      "https://t.me/meme_flip_ai_Bot?download=" + response.url
                     );
                   } catch (e) {
                     toast.error("An unexpected error! Try generating again!");
