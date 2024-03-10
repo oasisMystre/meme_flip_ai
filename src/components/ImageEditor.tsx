@@ -3,14 +3,15 @@ import { PiSparkleFill } from "react-icons/pi";
 import { IoText } from "react-icons/io5";
 
 import useImage from "use-image";
-import { Layer, Image, Stage, KonvaNodeComponent } from "react-konva";
+import Konva from "konva";
+import { KonvaEventObject } from "konva/lib/Node";
+import { Layer, Image, Stage } from "react-konva";
 
 import Text from "./konva/Text";
 import TextEditDialog from "./TextEditDialog";
 
 import { convertRemToPixels } from "../lib/utils";
-import Konva from "konva";
-import { KonvaEventObject } from "konva/lib/Node";
+
 
 type ImageEditorProps = {
   src: string;
