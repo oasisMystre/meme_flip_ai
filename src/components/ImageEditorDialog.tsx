@@ -100,7 +100,7 @@ export default function ImageEditorDialog({
                 onClick={async () => {
                   try {
                     setLoading(true);
-                    const url = imageEditorRef.current!.toDataURL();
+                    const url = imageEditorRef.current!.clone().toDataURL();
                     const response = await ImageKit.instance.uploadImageURL(
                       url
                     );
