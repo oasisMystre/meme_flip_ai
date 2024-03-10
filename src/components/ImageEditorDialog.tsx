@@ -96,7 +96,7 @@ export default function ImageEditorDialog({
               />
 
               <button
-                className="self-center flex items-center justify-center w-xs bg-amber-500 py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600"
+                className="md:self-center flex items-center justify-center  md:w-xs bg-amber-500 py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600"
                 onClick={async () => {
                   try {
                     setLoading(true);

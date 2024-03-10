@@ -3,13 +3,14 @@ import { PiSparkleFill } from "react-icons/pi";
 import { IoText } from "react-icons/io5";
 
 import useImage from "use-image";
-import { Layer, Image, Stage } from "react-konva";
+import { Layer, Image, Stage, KonvaNodeComponent } from "react-konva";
 
 import Text from "./konva/Text";
 import TextEditDialog from "./TextEditDialog";
 
 import { convertRemToPixels } from "../lib/utils";
 import Konva from "konva";
+import { KonvaEventObject } from "konva/lib/Node";
 
 type ImageEditorProps = {
   src: string;
@@ -17,7 +18,7 @@ type ImageEditorProps = {
 };
 
 export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
-  { src},
+  { src },
   ref
 ) {
   const [image] = useImage(src, "anonymous");
@@ -30,9 +31,24 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
     Omit<React.ComponentProps<typeof Text>, "hideDecorator">[]
   >([]);
 
+  const onTextEdit = (event: KonvaEventObject<Event>) => {
+    setIsOpen(true);
+
+    const position = event.currentTarget.getPosition();
+
+    const top = position.y + 32 + "px";
+    const left = position.x - 32 + "px";
+
+    setCurrentText(event.target as unknown as Konva.Text);
+    setTextEditDialogStyle({
+      top,
+      left,
+    });
+  };
+
   return (
     <>
-      <div className="w-full max-w-[22rem] relative h-[22rem] self-center">
+      <div className="w-full md:max-w-[22rem] relative h-[22rem] self-center">
         {isOpen && (
           <TextEditDialog
             currentText={currentText}
@@ -71,21 +87,8 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
                     top: event.target.y(),
                   });
                 }}
-                onClick={(event) => {
-                  event.evt.preventDefault();
-                  setIsOpen(true);
-
-                  const position = event.currentTarget.getPosition();
-
-                  const top = position.y + 32 + "px";
-                  const left = position.x - 32 + "px";
-
-                  setCurrentText(event.target as unknown as Konva.Text);
-                  setTextEditDialogStyle({
-                    top,
-                    left,
-                  });
-                }}
+                onTap={onTextEdit}
+                onClick={onTextEdit}
               />
             ))}
           </Layer>
