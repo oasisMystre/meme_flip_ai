@@ -29,7 +29,6 @@ export default function HomePage() {
         <Search
           onUpload={(source) => {
             setSource(source);
-            if (source.length > 0) Telegram.WebApp.MainButton.hide();
           }}
         />
         <div className="flex-1 flex flex-col">
