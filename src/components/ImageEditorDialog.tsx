@@ -5,13 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
 
-import { useTelegramWebApp } from "@telegram-web-app/react";
-
 import Dialog from "./Dialog";
 import ImageEditor from "./ImageEditor";
 import ImageKit from "../lib/imagekit";
 import KeyStore from "../lib/keystore";
-import { UploadResponse } from "imagekit-javascript/dist/src/interfaces";
 
 export type ImageEditorDialogElement = {
   toggle: (state?: boolean) => void;
@@ -30,7 +27,6 @@ export default function ImageEditorDialog({
   setSource,
   onClose,
 }: ImageEditorDialogProps) {
-  const Telegram = useTelegramWebApp();
   const imageEditorRef = useRef<Konva.Stage | null>(null);
 
   const [loading, setLoading] = useState(false);
