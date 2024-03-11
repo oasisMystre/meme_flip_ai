@@ -8,6 +8,7 @@ import ImageKit from "../lib/imagekit";
 import KeyStore from "../lib/keystore";
 import EmptyGenerated from "../components/EmptyGenerated";
 import { toast } from "react-toastify";
+import clsx from "clsx";
 
 type UploadResponse = Awaited<ReturnType<ImageKit["uploadImageURL"]>>;
 
@@ -32,7 +33,12 @@ export default function GeneratedPage() {
         </button>
         <h1 className="font-extrabold text-2xl">Generated Memes</h1>
       </header>
-      <div className="flex-1 grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div
+        className={clsx(
+          "flex-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+          [!generated || generated?.length === 0 ? "flex flex-col items-center justify-center" : "grid grid-cols-2"]
+        )}
+      >
         {generated ? (
           generated.length > 0 ? (
             generated.map((generated, index) => (
