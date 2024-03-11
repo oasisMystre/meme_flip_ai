@@ -55,7 +55,7 @@ export default function ImageEditorDialog({
                   key={index}
                   className={clsx(
                     "relative w-16 h-16 rounded-md flex justify-center items-center",
-                    { "border-3 border-amber-300": selected }
+                    { "border-3 border-purple-300": selected }
                   )}
                   onClick={() => setActiveImage(image)}
                 >
@@ -94,7 +94,7 @@ export default function ImageEditorDialog({
               />
 
               <button
-                className="md:self-center flex items-center justify-center  md:w-xs bg-amber-500 py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600"
+                className="md:self-center flex items-center justify-center  md:w-xs bg-primary py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600"
                 onClick={async () => {
                   try {
                     setLoading(true);
