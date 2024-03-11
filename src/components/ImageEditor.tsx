@@ -61,7 +61,7 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
 
         <Stage
           ref={ref}
-          width={convertRemToPixels(22)}
+          width={convertRemToPixels(19.5)}
           height={convertRemToPixels(20)}
         >
           <Layer>

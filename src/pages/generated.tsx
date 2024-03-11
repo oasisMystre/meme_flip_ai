@@ -23,8 +23,12 @@ export default function GeneratedPage() {
   }, []);
 
   useEffect(() => {
-    if (!Telegram.WebApp.BackButton.isVisible)
+    if (!Telegram.WebApp.BackButton.isVisible) {
       Telegram.WebApp.BackButton.show();
+      Telegram.WebApp.BackButton.onClick(() => {
+        window.history.back();
+      });
+    }
     return KeyStore.instance.on("change", () => {
       setGenerated(KeyStore.instance.get<UploadResponse[]>("generated", []));
     });
