@@ -12,11 +12,16 @@ import { TelegramWebAppProvider } from "@telegram-web-app/react";
 import "./index.css";
 import HomePage from "./pages";
 import GetMemeProvider from "./providers/GetMemeProvider";
+import GeneratedPage from "./pages/generated";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: HomePage,
+  },
+  {
+    path: "/generated",
+    Component: GeneratedPage,
   },
 ]);
 

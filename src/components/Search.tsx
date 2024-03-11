@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import { MdPhoto, MdSearch } from "react-icons/md";
+import { MdEmojiEmotions, MdPhoto, MdSearch } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 type SearchProps = {
   onUpload: (source: string[]) => void;
@@ -16,7 +17,7 @@ export default function Search({ onUpload }: SearchProps) {
       >
         <MdSearch className="text-xl text-stone-400" />
         <input
-          className="py-2 bg-transparent hover:outline-none focus:outline-none placeholder-stone-400"
+          className="lt-md:w-28 py-2 bg-transparent hover:outline-none focus:outline-none placeholder-stone-400 truncate"
           placeholder="Search meme, gifs, tags"
         />
       </div>
@@ -31,13 +32,22 @@ export default function Search({ onUpload }: SearchProps) {
           if (files) onUpload(Array.from(files).map(URL.createObjectURL));
         }}
       />
-      <button
-        className="flex space-x-2 items-center bg-amber-500 text-white px-4 py-2 rounded-md"
-        onClick={() => fileRef.current?.click()}
-      >
-        <MdPhoto className="text-xl" />
-        <span>Upload</span>
-      </button>
+      <div className="flex space-x-4 items-center">
+        <Link
+          to="/generated"
+          className="flex space-x-2 items-center bg-white text-black px-4 py-2 rounded-md"
+        >
+          <MdEmojiEmotions className="text-xl" />
+          <span>Memes</span>
+        </Link>
+        <button
+          className="flex space-x-2 items-center bg-amber-500 text-white px-4 py-2 rounded-md"
+          onClick={() => fileRef.current?.click()}
+        >
+          <MdPhoto className="text-xl" />
+          <span>Upload</span>
+        </button>
+      </div>
     </div>
   );
 }

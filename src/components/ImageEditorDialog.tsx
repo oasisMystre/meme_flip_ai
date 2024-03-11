@@ -10,6 +10,8 @@ import { useTelegramWebApp } from "@telegram-web-app/react";
 import Dialog from "./Dialog";
 import ImageEditor from "./ImageEditor";
 import ImageKit from "../lib/imagekit";
+import KeyStore from "../lib/keystore";
+import { UploadResponse } from "imagekit-javascript/dist/src/interfaces";
 
 export type ImageEditorDialogElement = {
   toggle: (state?: boolean) => void;
@@ -100,17 +102,18 @@ export default function ImageEditorDialog({
                 onClick={async () => {
                   try {
                     setLoading(true);
-                    const url = Object.create(imageEditorRef.current!).clone().toDataURL();
+                    const url = Object.create(imageEditorRef.current!)
+                      .clone()
+                      .toDataURL();
                     const response = await ImageKit.instance.uploadImageURL(
                       url
                     );
-                    toast.success("CMeme generated successful.");
-                    Telegram.WebApp.openLink(
-                      response.url,
-                      {
-                       try_instant_view: true, 
-                      }
-                    );
+                    toast.success("Meme generated successful.");
+                    const value = KeyStore.instance.get<
+                      Awaited<ReturnType<ImageKit["uploadImageURL"]>>[]
+                    >("generated", []);
+                    value!.push(response);
+                    KeyStore.instance.set("generated", value as object);
                   } catch (e) {
                     toast.error("An unexpected error! Try generating again!");
                     throw e;
