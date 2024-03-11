@@ -88,8 +88,8 @@ export default function GeneratedPage() {
                           const blob = await fetch(generated.url).then((r) =>
                             r.blob()
                           );
-                          const file = new File([blob], "Customize Meme", {
-                            type: blob.type,
+                          const file = new File([blob], "Customize_Meme.png", {
+                            type: “image/png”,
                           });
 
                           await navigator.share({
