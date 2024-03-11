@@ -13,7 +13,7 @@ export default defineConfig({
       provider: "google",
       fonts: {
         sans: "Nunito Sans",
-        lato: "Lato",
+        lato: "Noto Sans",
       },
     }),
   ],

@@ -1,12 +1,6 @@
-:root {
-  --tg-theme-bg-color: #000;
-  --tg-theme-text-color: #fff;
-}
-
 #search:focus-within svg {
---at-apply: text-purple-300;
+  --at-apply: text-purple-300;
 }
-
 
 .bg-primary {
   --at-apply: bg-gradient-to-r from-[#03e1ff] to-[#ab29ff];

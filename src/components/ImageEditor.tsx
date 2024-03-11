@@ -1,5 +1,6 @@
 import { forwardRef, useState } from "react";
-import { PiSparkleFill } from "react-icons/pi";
+import { createPortal } from "react-dom";
+import { PiSparkleFill, PiMagicWandFill } from "react-icons/pi";
 import { IoText } from "react-icons/io5";
 
 import useImage from "use-image";
@@ -10,8 +11,10 @@ import { Layer, Image, Stage } from "react-konva";
 import Text from "./konva/Text";
 import TextEditDialog from "./TextEditDialog";
 
+import siri from "../assets/siri.gif";
 import { convertRemToPixels } from "../lib/utils";
-
+import OpenAi from "../lib/openai";
+import { toast } from "react-toastify";
 
 type ImageEditorProps = {
   src: string;
@@ -23,6 +26,9 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
   ref
 ) {
   const [image] = useImage(src, "anonymous");
+
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[] | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentText, setCurrentText] = useState<Konva.Text>();
@@ -49,71 +55,121 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
 
   return (
     <>
-      <div className="w-full md:max-w-[22rem] relative h-[22rem] self-center">
-        {isOpen && (
-          <TextEditDialog
-            currentText={currentText}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            style={textEditDialogStyle}
-          />
-        )}
-
-        <Stage
-          ref={ref}
-          width={convertRemToPixels(19.5)}
-          height={convertRemToPixels(20)}
-        >
-          <Layer>
-            <Image
-              image={image}
-              width={360}
-              height={360}
+      <div>
+        <div className="w-full md:max-w-[22rem] relative h-[22rem] self-center">
+          {isOpen && (
+            <TextEditDialog
+              currentText={currentText}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              style={textEditDialogStyle}
             />
-            {texts.map((text, index) => (
-              <Text
+          )}
+
+          <Stage
+            ref={ref}
+            width={convertRemToPixels(19.5)}
+            height={convertRemToPixels(20)}
+          >
+            <Layer>
+              <Image
+                image={image}
+                width={360}
+                height={360}
+              />
+              {texts.map((text, index) => (
+                <Text
+                  key={index}
+                  {...text}
+                  draggable
+                  fontSize={28}
+                  fill="black"
+                  shadowColor="white"
+                  shadowBlur={4}
+                  stroke="white"
+                  strokeWidth={1}
+                  fontStyle="bold"
+                  onDragMove={(event) => {
+                    setTextEditDialogStyle({
+                      left: event.target.x(),
+                      top: event.target.y(),
+                    });
+                  }}
+                  onTap={onTextEdit}
+                  onClick={onTextEdit}
+                />
+              ))}
+            </Layer>
+          </Stage>
+          <div className="absolute inset-x-0 bottom-8 flex space-x-2 items-center bg-black/20 p-2">
+            <button
+              className="p-2 bg-black/80 rounded-md"
+              onClick={async () => {
+                setIsGenerating(true);
+                OpenAi.instance
+                  .recommendCaptions(src)
+                  .then((response) =>
+                    setSuggestions(
+                      response.choices
+                        .map((choice) => choice.message.content)
+                        .filter((message) => message != null) as string[]
+                    )
+                  )
+                  .catch((error) => toast.error(error.message))
+                  .finally(() => setIsGenerating(false));
+              }}
+            >
+              <PiSparkleFill className="text-xl text-cyan-500" />
+            </button>
+            <button
+              className="p-2 bg-black/80 rounded-md"
+              onClick={() => {
+                setTexts((texts) => {
+                  const text = {
+                    text: "Tap to Edit",
+                  };
+
+                  return [text, ...texts];
+                });
+              }}
+            >
+              <IoText className="text-xl" />
+            </button>
+          </div>
+        </div>
+        {suggestions && (
+          <div className="flex flex-col space-y-4">
+            {suggestions.map((suggestion, index) => (
+              <button
                 key={index}
-                {...text}
-                draggable
-                fontSize={28}
-                fill="black"
-                shadowColor="white"
-                shadowBlur={4}
-                stroke="white"
-                strokeWidth={1}
-                fontStyle="bold"
-                onDragMove={(event) => {
-                  setTextEditDialogStyle({
-                    left: event.target.x(),
-                    top: event.target.y(),
+                className="flex space-x-2 items-center bg-stone-900 px-4 py-3 rounded-md font-lato"
+                onClick={() => {
+                  setTexts((texts) => {
+                    const text = {
+                      text: suggestion,
+                    };
+
+                    return [text, ...texts];
                   });
                 }}
-                onTap={onTextEdit}
-                onClick={onTextEdit}
-              />
+              >
+                <PiMagicWandFill className="text-xl text-violet-500" />
+                <p>{suggestion}</p>
+              </button>
             ))}
-          </Layer>
-        </Stage>
-        <div className="absolute inset-x-0 bottom-8 flex space-x-2 items-center bg-black/20 p-2">
-          <button className="p-2 bg-black/80 rounded-md">
-            <PiSparkleFill className="text-xl text-cyan-500" />
-          </button>
-          <button
-            className="p-2 bg-black/80 rounded-md"
-            onClick={() => {
-              setTexts((texts) => {
-                const text = {
-                  text: "Tap to Edit",
-                };
-
-                return [text, ...texts];
-              });
-            }}
-          >
-            <IoText className="text-xl" />
-          </button>
-        </div>
+          </div>
+        )}
       </div>
+      {isGenerating &&
+        createPortal(
+          <div className="fixed inset-0 bg-black/50 flex flex-col items-center justify-center">
+            <img
+              src={siri}
+              className="w-24 h-24"
+            />
+          </div>,
+          document.body
+        )}
     </>
   );
 });

@@ -27,7 +27,7 @@ export default function Dialog({ visible, setVisible, children }: DialogProps) {
         [visible ? "flex flex-col" : "hidden"]
       )}
     >
-      <div className="lt-md:flex-1 flex flex-col space-y-4 bg-stone-900 rounded-t-xl p-4 overflow-y-scroll md:max-w-lg">
+      <div className="lt-md:flex-1 flex flex-col space-y-4 bg-stone-950 rounded-t-xl p-4 overflow-y-scroll md:max-w-lg">
         {children}
       </div>
     </div>

@@ -1,21 +1,20 @@
 import clsx from "clsx";
-import { useTelegramWebApp } from "@telegram-web-app/react";
+import { BackButton } from "@vkruglikov/react-telegram-web-app";
 
 import { Menu } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { MdMoreVert } from "react-icons/md";
+import { toast } from "react-toastify";
 
 import copy from "copy-to-clipboard";
 
 import ImageKit from "../lib/imagekit";
 import KeyStore from "../lib/keystore";
 import EmptyGenerated from "../components/EmptyGenerated";
-import { toast } from "react-toastify";
 
 type UploadResponse = Awaited<ReturnType<ImageKit["uploadImageURL"]>>;
 
 export default function GeneratedPage() {
-  const Telegram = useTelegramWebApp();
   const [generated, setGenerated] = useState<UploadResponse[] | null>(null);
 
   useEffect(() => {
@@ -23,12 +22,6 @@ export default function GeneratedPage() {
   }, []);
 
   useEffect(() => {
-    if (!Telegram.WebApp.BackButton.isVisible) {
-      Telegram.WebApp.BackButton.show();
-      Telegram.WebApp.BackButton.onClick(() => {
-        window.history.back();
-      });
-    }
     return KeyStore.instance.on("change", () => {
       setGenerated(KeyStore.instance.get<UploadResponse[]>("generated", []));
     });
@@ -67,7 +60,7 @@ export default function GeneratedPage() {
                     <Menu.Item>
                       <a
                         href={generated.url}
-                        download
+                        download={generated.name}
                         className="px-4 py-2 flex items-center justify-center"
                       >
                         Download
@@ -92,9 +85,16 @@ export default function GeneratedPage() {
                       <button
                         className="px-4 py-2"
                         onClick={async () => {
+                          const blob = await fetch(generated.url).then((r) =>
+                            r.blob()
+                          );
+                          const file = new File([blob], "Customize Meme", {
+                            type: blob.type,
+                          });
+
                           await navigator.share({
-                            url: generated.url,
-                            text: "Check ou MemeAI to generate your custom meme.",
+                            files: [file],
+                            text: "Check out MemeAI to generate your custom meme. https://t.me/bot_flip_ai_Bot",
                           });
                         }}
                       >
@@ -112,6 +112,7 @@ export default function GeneratedPage() {
           <div className="w-8 h-8 border-3  border-purple-500 border-t-transparent rounded-full" />
         )}
       </div>
+      <BackButton onClick={() => window.history.back()} />
     </div>
   );
 }

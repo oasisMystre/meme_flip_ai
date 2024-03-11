@@ -30,6 +30,7 @@ export default function ImageEditorDialog({
   const imageEditorRef = useRef<Konva.Stage | null>(null);
 
   const [loading, setLoading] = useState(false);
+
   const [activeImage, setActiveImage] = useState<string>();
 
   useEffect(() => setActiveImage(source?.[0]), [source]);
@@ -92,7 +93,6 @@ export default function ImageEditorDialog({
                 src={activeImage}
                 generating={loading}
               />
-
               <button
                 className="md:self-center flex items-center justify-center  md:w-xs bg-primary py-2 rounded-md hover:bg-amber-500/80 active:bg-amber-600"
                 onClick={async () => {
