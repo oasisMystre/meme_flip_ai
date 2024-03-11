@@ -89,7 +89,7 @@ export default function GeneratedPage() {
                             r.blob()
                           );
                           const file = new File([blob], "Customize_Meme.png", {
-                            type: “image/png”,
+                            type: "image/png",
                           });
 
                           await navigator.share({
