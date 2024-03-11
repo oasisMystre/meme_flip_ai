@@ -3,7 +3,7 @@ import { useTelegramWebApp } from "@telegram-web-app/react";
 
 import { Menu } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { MdMoreVert, MdClose } from "react-icons/md";
+import { MdMoreVert } from "react-icons/md";
 
 import copy from "copy-to-clipboard";
 
@@ -36,12 +36,6 @@ export default function GeneratedPage() {
 
   return (
     <div className="flex-1 p-8 flex flex-col space-y-8">
-      <header className="fle space-x-4 hidden">
-        <button onClick={() => history.back()}>
-          <MdClose className="text-xl text-white" />
-        </button>
-        <h1 className="font-extrabold text-2xl">Generated Memes</h1>
-      </header>
       <div
         className={clsx(
           "flex-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
