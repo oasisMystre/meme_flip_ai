@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { GetMemeContext } from "../providers/GetMemeProvider";
 import { Meme } from "../lib/api/imgflip/models/Meme.model";
