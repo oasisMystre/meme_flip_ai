@@ -35,13 +35,13 @@ export default function Search({ onUpload }: SearchProps) {
       <div className="flex space-x-4 items-center">
         <Link
           to="/generated"
-          className="flex space-x-2 items-center bg-white text-purple-500 px-4 py-2 rounded-md"
+          className="flex space-x-2 items-center bg-white text-purple-500 p-2 rounded-md"
         >
           <MdEmojiEmotions className="text-xl" />
           <span>Memes</span>
         </Link>
         <button
-          className="flex space-x-2 items-center bg-primary text-white px-4 py-2 rounded-md"
+          className="flex space-x-2 items-center bg-primary text-white p-2 rounded-md"
           onClick={() => fileRef.current?.click()}
         >
           <MdPhoto className="text-xl" />
