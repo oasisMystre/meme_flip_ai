@@ -1,5 +1,5 @@
 import { useTelegramWebApp } from "@telegram-web-app/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { GetMemeContext } from "../providers/GetMemeProvider";
 import { Meme } from "../lib/api/imgflip/models/Meme.model";
@@ -24,6 +24,10 @@ export default function HomePage() {
       )
     );
   };
+
+  useEffect(() => {
+    if (Telegram.WebApp.BackButton.isVisible) Telegram.WebApp.BackButton.hide();
+  }, []);
 
   return (
     <>

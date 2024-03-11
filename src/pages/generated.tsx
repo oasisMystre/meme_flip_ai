@@ -1,3 +1,6 @@
+import clsx from "clsx";
+import { useTelegramWebApp } from "@telegram-web-app/react";
+
 import { Menu } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { MdMoreVert, MdClose } from "react-icons/md";
@@ -8,11 +11,11 @@ import ImageKit from "../lib/imagekit";
 import KeyStore from "../lib/keystore";
 import EmptyGenerated from "../components/EmptyGenerated";
 import { toast } from "react-toastify";
-import clsx from "clsx";
 
 type UploadResponse = Awaited<ReturnType<ImageKit["uploadImageURL"]>>;
 
 export default function GeneratedPage() {
+  const Telegram = useTelegramWebApp();
   const [generated, setGenerated] = useState<UploadResponse[] | null>(null);
 
   useEffect(() => {
@@ -20,6 +23,8 @@ export default function GeneratedPage() {
   }, []);
 
   useEffect(() => {
+    if (!Telegram.WebApp.BackButton.isVisible)
+      Telegram.WebApp.BackButton.show();
     return KeyStore.instance.on("change", () => {
       setGenerated(KeyStore.instance.get<UploadResponse[]>("generated", []));
     });
@@ -27,7 +32,7 @@ export default function GeneratedPage() {
 
   return (
     <div className="flex-1 p-8 flex flex-col space-y-8">
-      <header className="flex space-x-4">
+      <header className="fle space-x-4 hidden">
         <button onClick={() => history.back()}>
           <MdClose className="text-xl text-white" />
         </button>
@@ -36,7 +41,11 @@ export default function GeneratedPage() {
       <div
         className={clsx(
           "flex-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
-          [!generated || generated?.length === 0 ? "flex flex-col items-center justify-center" : "grid grid-cols-2"]
+          [
+            !generated || generated?.length === 0
+              ? "flex flex-col items-center justify-center"
+              : "grid grid-cols-2",
+          ]
         )}
       >
         {generated ? (
