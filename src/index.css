@@ -6,3 +6,8 @@
 #search:focus-within svg {
 --at-apply: text-amber-300;
 }
+
+
+.bg-primary {
+  --at-apply: bg-gradient-to-r from-[#03e1ff] to-[#ab29ff];
+}

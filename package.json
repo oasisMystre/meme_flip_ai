@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "@telegram-web-app/react": "0.0.1-beta.1",
     "@unocss/reset": "^0.58.5",
     "axios": "^1.6.7",
     "clsx": "^2.1.0",
+    "copy-to-clipboard": "^3.3.3",
     "imagekit": "^5.0.0",
     "imagekit-javascript": "^3.0.0",
     "konva": "^9.3.6",

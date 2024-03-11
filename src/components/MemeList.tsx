@@ -32,7 +32,7 @@ export default function MemeList({
             />
             {selected && (
               <div className="bg-white rounded-full absolute top-2 right-2 ">
-                <MdCheckCircle className="text-2xl text-amber-500" />
+                <MdCheckCircle className="text-2xl text-purple-500" />
               </div>
             )}
           </div>

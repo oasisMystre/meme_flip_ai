@@ -59,7 +59,7 @@ export default function HomePage() {
         {selectedMemes.size > 0 && (
           <div className="fixed inset-x-0 bottom-0 flex flex-col">
             <button
-              className="bg-amber-500 py-4 hover:bg-amber-600 active:bg-amber-600"
+              className="bg-primary py-4"
               onClick={onSelect}
             >
               <p className="uppercase">Add Caption</p>
