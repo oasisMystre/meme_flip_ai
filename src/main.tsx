@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { TelegramWebAppProvider } from "@telegram-web-app/react";
 import { WebAppProvider } from "@vkruglikov/react-telegram-web-app";
 
 import "./index.css";
@@ -28,7 +27,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <TelegramWebAppProvider>
       <WebAppProvider options={{ smoothButtonsTransition: true }}>
         <div className="fixed inset-0 flex flex-col bg-black text-white  overflow-y-scroll font-sans">
           <GetMemeProvider>
@@ -37,6 +35,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </GetMemeProvider>
         </div>
       </WebAppProvider>
-    </TelegramWebAppProvider>
   </React.StrictMode>
 );
