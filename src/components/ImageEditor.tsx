@@ -28,7 +28,7 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
   const [image] = useImage(src, "anonymous");
 
   const [isGenerating, setIsGenerating] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[] | null>(null);
+  const [suggestions, setSuggestions] = useState<string[][] | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentText, setCurrentText] = useState<Konva.Text>();
@@ -51,6 +51,10 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
       top,
       left,
     });
+  };
+
+  const removeText = function (text: any) {
+    setTexts(texts.filter((value) => value !== text));
   };
 
   return (
@@ -97,6 +101,8 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
                   }}
                   onTap={onTextEdit}
                   onClick={onTextEdit}
+                  onDblClick={() => removeText(text)}
+                  onDblTap={() => removeText(text)}
                 />
               ))}
             </Layer>
@@ -111,8 +117,15 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
                   .then((response) =>
                     setSuggestions(
                       response.choices
-                        .map((choice) => choice.message.content)
-                        .filter((message) => message != null) as string[]
+                        .map((choice) => {
+                          const text = choice.message.content;
+                          if (text)
+                            return text
+                              .split("%")
+                              .filter((value) => value.trim().length > 0);
+                          return null;
+                        })
+                        .filter((message) => message != null) as string[][]
                     )
                   )
                   .catch((error) => toast.error(error.message))
@@ -145,16 +158,17 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
                 className="flex space-x-2 items-center bg-stone-900 px-4 py-3 rounded-md font-lato"
                 onClick={() => {
                   setTexts((texts) => {
-                    const text = {
-                      text: suggestion,
-                    };
+                    for (const text of suggestion)
+                      texts.push({
+                        text,
+                      });
 
-                    return [text, ...texts];
+                    return [...texts];
                   });
                 }}
               >
                 <PiMagicWandFill className="text-xl text-violet-500" />
-                <p>{suggestion}</p>
+                <p>{suggestion.join(" ")}</p>
               </button>
             ))}
           </div>

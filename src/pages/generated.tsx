@@ -15,6 +15,7 @@ import EmptyGenerated from "../components/EmptyGenerated";
 type UploadResponse = Awaited<ReturnType<ImageKit["uploadImageURL"]>>;
 
 export default function GeneratedPage() {
+  const [showBack, setShowBack] = useState(false);
   const [generated, setGenerated] = useState<UploadResponse[] | null>(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function GeneratedPage() {
   }, []);
 
   useEffect(() => {
+    setShowBack(true);
     return KeyStore.instance.on("change", () => {
       setGenerated(KeyStore.instance.get<UploadResponse[]>("generated", []));
     });
@@ -112,7 +114,7 @@ export default function GeneratedPage() {
           <div className="w-8 h-8 border-3  border-purple-500 border-t-transparent rounded-full" />
         )}
       </div>
-      <BackButton onClick={() => window.history.back()} />
+      {showBack && <BackButton onClick={() => window.history.back()} />}
     </div>
   );
 }
