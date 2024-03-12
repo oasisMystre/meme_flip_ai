@@ -96,7 +96,6 @@ export default function GeneratedPage() {
 
                           await navigator.share({
                             files: [file],
-                            text: "Check out MemeAI to generate your custom meme. https://t.me/bot_flip_ai_Bot",
                           });
                         }}
                       >
