@@ -56,7 +56,7 @@ export default function ImageEditorDialog({
                   key={index}
                   className={clsx(
                     "relative w-16 h-16 rounded-md flex justify-center items-center",
-                    { "border-3 border-purple-300": selected }
+                    { "border-3 border-primary": selected }
                   )}
                   onClick={() => setActiveImage(image)}
                 >

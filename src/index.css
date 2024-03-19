@@ -3,5 +3,5 @@
 }
 
 .bg-primary {
-  --at-apply: bg-gradient-to-r from-[#03e1ff] to-[#ab29ff];
+  --at-apply: bg-gradient-to-r from-secondary/50 to-tetiary;
 }

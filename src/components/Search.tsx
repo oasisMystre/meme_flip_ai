@@ -13,7 +13,7 @@ export default function Search({ onUpload }: SearchProps) {
     <div className="flex items-center space-x-2">
       <div
         id="search"
-        className="flex-1 flex items-center space-x-2 px-2 bg-stone-800/50 rounded-md  border-1 border-transparent focus-within:ring-3 focus-within:border-purple-500 ring-purple-300"
+        className="flex-1 flex items-center space-x-2 px-2 bg-stone-800/50 rounded-md  border-1 border-transparent focus-within:ring-3 focus-within:border-primaryple-500 ring-primaryple-300"
       >
         <MdSearch className="text-xl text-stone-400" />
         <input
@@ -35,7 +35,7 @@ export default function Search({ onUpload }: SearchProps) {
       <div className="flex space-x-4 items-center">
         <Link
           to="/generated"
-          className="flex space-x-2 items-center bg-white text-purple-500 p-2 rounded-md"
+          className="flex space-x-2 items-center bg-white text-primary p-2 rounded-md"
         >
           <MdEmojiEmotions className="text-xl" />
           <span>Memes</span>
