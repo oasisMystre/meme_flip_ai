@@ -3,7 +3,13 @@ import { BackButton } from "@vkruglikov/react-telegram-web-app";
 
 import { Menu } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { MdMoreVert } from "react-icons/md";
+import {
+  MdMoreVert,
+  MdDelete,
+  MdDownload,
+  MdCopyAll,
+  MdShare,
+} from "react-icons/md";
 import { toast } from "react-toastify";
 
 import copy from "copy-to-clipboard";
@@ -29,6 +35,14 @@ export default function GeneratedPage() {
     });
   }, []);
 
+  const deleteGenerated = (value: UploadResponse) => {
+    const filtered = generated!.filter((generated) => generated !== value);
+    setGenerated(filtered);
+    KeyStore.instance.set("generated", filtered);
+
+    toast("Meme deleted succesfully.");
+  };
+
   return (
     <div className="flex-1 p-8 flex flex-col space-y-8">
       <div
@@ -37,7 +51,7 @@ export default function GeneratedPage() {
           [
             !generated || generated?.length === 0
               ? "flex flex-col items-center justify-center"
-              : "grid grid-cols-2",
+              : "grid grid-cols-2 md:grid-cols-4 lg:md-cols-5 xl:md-cols-6",
           ]
         )}
       >
@@ -46,46 +60,22 @@ export default function GeneratedPage() {
             generated.map((generated, index) => (
               <div
                 key={index}
-                className="relative"
+                className="relative h-48"
               >
                 <img
                   src={generated.url}
                   width={generated.width}
                   height={generated.height}
-                  className="w-full h-48 md:h-xs rounded-md"
+                  className="w-full h-full md:h-xs rounded-md"
                 />
                 <Menu>
                   <Menu.Button className="absolute top-2 right-2 !bg-stone-950/50 p-2 rounded-md">
                     <MdMoreVert />
                   </Menu.Button>
-                  <Menu.Items className="w-32 h-32 absolute right-2 top-11 flex flex-col bg-stone-950 text-white rounded-md divide-y divide-stone-800">
-                    <Menu.Item>
-                      <a
-                        href={generated.url}
-                        download={generated.name}
-                        className="px-4 py-2 flex items-center justify-center"
-                      >
-                        Download
-                      </a>
-                    </Menu.Item>
+                  <Menu.Items className="w-32 absolute right-2 top-11 flex flex-col bg-stone-950 text-white rounded-md divide-y divide-stone-800">
                     <Menu.Item>
                       <button
-                        className="px-4 py-2"
-                        onClick={() => {
-                          copy(generated.url, {
-                            debug: true,
-                            onCopy() {
-                              toast.success("Preview url copied to clipboard!");
-                            },
-                          });
-                        }}
-                      >
-                        Copy Link
-                      </button>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <button
-                        className="px-4 py-2"
+                        className="flex items-center space-x-2 p-2"
                         onClick={async () => {
                           const blob = await fetch(generated.url).then((r) =>
                             r.blob()
@@ -99,7 +89,44 @@ export default function GeneratedPage() {
                           });
                         }}
                       >
-                        Share
+                        <MdShare />
+                        <span>Share</span>
+                      </button>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <button
+                        className="flex items-center space-x-2 p-2"
+                        onClick={() => deleteGenerated(generated)}
+                      >
+                        <MdDelete />
+                        <span>Delete</span>
+                      </button>
+                    </Menu.Item>
+
+                    <Menu.Item>
+                      <a
+                        href={generated.url}
+                        download={generated.name}
+                        className="flex items-center space-x-2 p-2"
+                      >
+                        <MdDownload className="text-lg" />
+                        <span>Download</span>
+                      </a>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <button
+                        className="flex items-center space-x-2 p-2"
+                        onClick={() => {
+                          copy(generated.url, {
+                            debug: true,
+                            onCopy() {
+                              toast.success("Preview url copied to clipboard!");
+                            },
+                          });
+                        }}
+                      >
+                        <MdCopyAll className="text-xl" />
+                        <span>Copy Link</span>
                       </button>
                     </Menu.Item>
                   </Menu.Items>
