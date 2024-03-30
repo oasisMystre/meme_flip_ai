@@ -102,7 +102,8 @@ export default function ImageEditorDialog({
                       .clone()
                       .toDataURL();
                     const response = await ImageKit.instance.uploadImageURL(
-                      url
+                      url,
+                      {}
                     );
                     toast.success("Meme generated successful.");
                     const value = KeyStore.instance.get<

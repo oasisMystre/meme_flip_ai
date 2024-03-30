@@ -15,6 +15,7 @@ import siri from "../assets/siri.gif";
 import { convertRemToPixels } from "../lib/utils";
 import OpenAi from "../lib/openai";
 import { toast } from "react-toastify";
+import ImageKit from "../lib/imagekit";
 
 type ImageEditorProps = {
   src: string;
@@ -112,8 +113,19 @@ export default forwardRef<Konva.Stage, ImageEditorProps>(function ImageEditor(
               className="p-2 bg-black/80 rounded-md"
               onClick={async () => {
                 setIsGenerating(true);
+                let imageURL = src;
+
+                if (imageURL.startsWith("blob")) {
+                  const response = await ImageKit.instance.uploadImageURL(src, {
+                    folder: "ai",
+                    fileName: "ai_input_image.png",
+                  });
+
+                  imageURL = response.url;
+                }
+
                 OpenAi.instance
-                  .recommendCaptions(src)
+                  .recommendCaptions(imageURL)
                   .then((response) =>
                     setSuggestions(
                       response.choices

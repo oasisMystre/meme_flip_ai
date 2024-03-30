@@ -7,6 +7,11 @@ type AuthParams = {
   signature: string;
 };
 
+type UploadParam = {
+  folder: string;
+  fileName: string;
+};
+
 export default class ImageKit {
   client: Kit;
 
@@ -21,15 +26,21 @@ export default class ImageKit {
     return axios.get<AuthParams>("https://memeai.onrender.com/imagekit/auth");
   }
 
-  async uploadImageURL(url: string) {
+  async uploadImageURL(
+    url: string,
+    {
+      folder = "meme_ai",
+      fileName = "meme_ai_generated.png",
+    }: Partial<UploadParam>
+  ) {
     const { data: authParams } = await this.getAuthorizationParams();
     const blob = await (await fetch(url)).blob();
 
     return this.client.upload({
       file: blob,
+      folder,
+      fileName,
       ...authParams,
-      folder: "meme_ai",
-      fileName: "meme_ai_generated.png",
     });
   }
 
